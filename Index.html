@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Bil animation</title>
+  <style>
+    .car {
+      fill: #ff0000;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .wheel {
+      fill: #000000;
+    }
+
+    .lane1 {
+      top: 50px;
+    }
+
+    .lane2 {
+      top: 90px;
+    }
+
+    .lane3 {
+      top: 130px;
+    }
+    .lane4 {
+      top: 170px;
+    }
+    .lane5 {
+      top: 210px;
+    }
+    .lane6 {
+      top: 250px;
+    }
+    .car.lane6 {
+      fill: green;
+    }
+
+    @keyframes move {
+      from {
+        transform: translateX(-100%);
+      }
+      to {
+        transform: translateX(500vw);
+      }
+    }
+
+    #startBtn,
+    #stopBtn {
+      background-color: black;
+      color: #ffffff;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+
+    #btnContainer {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+	#startBtn.active {
+    background-color: green;
+  }
+
+  #stopBtn.active {
+    background-color: red;
+  }
+</style>
+  </style>
+</head>
+<body>
+  <div id="btnContainer">
+    <button id="startBtn">Start</button>
+    <button id="stopBtn">Stop</button>
+  </div>
+
+  <script>
+	var animationInterval;
+	var startBtn = document.getElementById("startBtn");
+	var stopBtn = document.getElementById("stopBtn");
+  
+	function startAnimation() {
+	  var cars = document.querySelectorAll(".car");
+  
+	  cars.forEach(function(car) {
+		car.style.animation = "move 20s linear";
+		car.style.animationPlayState = "running";
+	  });
+
+	
+  
+	  // Remove active class from stop button
+	  stopBtn.classList.remove("active");
+  
+	  // Add active class to start button
+	  startBtn.classList.add("active");
+	  startBtn.disabled = true;
+  
+	  animationInterval = setInterval(removeOffscreenCars, 10);
+	}
+  
+
+	function stopAnimation() {
+    var cars = document.querySelectorAll(".car");
+
+    cars.forEach(function(car) {
+      car.style.animationPlayState = "paused";
+    });
+
+    clearInterval(animationInterval);
+
+    // Change the styles of the buttons
+    startBtn.classList.remove("active");
+    stopBtn.classList.add("active");
+    startBtn.disabled = false;
+  }
+function removeOffscreenCars() {
+  var cars = document.querySelectorAll(".car");
+
+  cars.forEach(function(car) {
+    var rect = car.getBoundingClientRect();
+    if (rect.right >= window.innerWidth + 75) {
+      car.remove();
+    }
+  });
+
+  if (document.querySelectorAll(".car").length === 0) {
+    startBtn.classList.remove("active");
+    startBtn.disabled = false;
+    clearInterval(animationInterval);
+
+    // Reset animation for new set of cars
+    createCars();
+  }
+}
+
+    document.getElementById("startBtn").addEventListener("click", startAnimation);
+    document.getElementById("stopBtn").addEventListener("click", stopAnimation);
+  </script>
+
+  <script>
+    for (var lane = 1; lane <= 6; lane++) {
+      for (var i = 0; i < (lane === 6 ? 14 : 53); i++) {
+        var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+        svg.setAttribute("viewBox", "0 0 100 50");
+        svg.setAttribute("height", "50px");
+        svg.setAttribute("width", "100px");
+        svg.setAttribute("class", "car");
+
+        // create car elements
+        var rect1 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect1.setAttribute("x", "10");
+        rect1.setAttribute("y", "20");
+        rect1.setAttribute("width", "50");
+        rect1.setAttribute("height", "10");
+        svg.appendChild(rect1);
+
+        var rect2 = document.createElementNS("http://www.w3.org/2000/svg", "rect");
+        rect2.setAttribute("x", "15");
+        rect2.setAttribute("y", "10");
+        rect2.setAttribute("width", "40");
+        rect2.setAttribute("height", "10");
+        svg.appendChild(rect2);
+
+        var wheel1 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        wheel1.setAttribute("cx", "20");
+        wheel1.setAttribute("cy", "30");
+        wheel1.setAttribute("r", "5");
+        wheel1.setAttribute("class", "wheel");
+        svg.appendChild(wheel1);
+
+        var wheel2 = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        wheel2.setAttribute("cx", "53");
+        wheel2.setAttribute("cy", "30");
+        wheel2.setAttribute("r", "5");
+        wheel2.setAttribute("class", "wheel");
+        svg.appendChild(wheel2);
+
+        // set class and position based on lane
+        if (lane === 1) {
+          // Lane 1
+          svg.setAttribute("class", "car lane1");
+          svg.style.left = (-100 - i * 75) + "px";
+        } else if (lane === 2) {
+          // Lane 2
+          svg.setAttribute("class", "car lane2");
+          svg.style.left = (-105 - i * 75) + "px";
+        } else if (lane === 3) {
+          // Lane 3
+          svg.setAttribute("class", "car lane3");
+          svg.style.left = (-110 - i * 75) + "px";
+        } else if (lane === 4) {
+          // Lane 4
+
+          svg.setAttribute("class", "car lane4");
+          svg.style.left = (-115 - i * 75) + "px";
+        } else if (lane === 5) {
+          // Lane 5
+          svg.setAttribute("class", "car lane5");
+          svg.style.left = (-120 - i * 75) + "px";
+        } else if (lane === 6) {
+          // Lane 6
+          svg.setAttribute("class", "car lane6");
+          svg.style.left = (-125 - i * 303.75) + "px";
+          if (i % 2 === 0) {
+            svg.style.transform = "translateY(-10px)";
+          }
+        }
+
+        document.body.appendChild(svg);
+      }
+    }
+  </script>
+</body>
+</html>
+
