@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"/>
+    <title>Maps</title>
+    <center><h1>Grøn energi og god luftkvalitet</h1></center>
+    <!-- Vi definerer kortets størrelsesforholde herunder -->
+    <style>
+        #map{
+            height: 800px;
+            width: 1520px;
+            margin: 2rem auto;
+        }
+    </style>
+<center><button id="button1">Trafiktal 2013</button>
+    <button id="button2">Trafiktal 2016</button>
+<button id="button">Trafiktal 2022</button></center>
+
+</head>
+<body>
+<!-- Vi indsætter vores script API source og vores main.js fil -->
+    <div id="map"></div>
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="main.js"></script>
+</body>
+</html>
